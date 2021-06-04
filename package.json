@@ -1,10 +1,11 @@
 {
   "name": "covid",
   "version": "1.0.0",
-  "description": "Finds slots for vaccine in given pincodes/districts",
+  "description": "Finds slots for vaccine in given districts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "keywords": [
     "covid-slot-finder"
@@ -14,7 +15,6 @@
   "dependencies": {
     "date-and-time": "^1.0.1",
     "node-fetch": "^2.6.1",
-    "nodemailer": "^6.6.1",
     "sendmail": "^1.6.1"
   }
 }
