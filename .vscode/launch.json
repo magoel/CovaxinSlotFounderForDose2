@@ -12,6 +12,15 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/index.js"
+        },
+        {
+            "name": "Launch File",
+            "program": "${file}",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
         }
     ]
 }
