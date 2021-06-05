@@ -31,8 +31,7 @@ function criteria (session) {
 }
 //////////// Configuration above this line only ///////////////////////////////////////////////////////
 
-const today = new Date(Date.now());
-const Days = (function (curr)
+function days(curr)
 {
     curr.setDate(curr.getDate() + 1);
     let res = [];
@@ -42,7 +41,9 @@ const Days = (function (curr)
         res.push(dateStr);
     }
     return res;
-})(today);
+};
+
+
 
 function checkResponseStatus(res) {
     if(res.ok){
@@ -70,7 +71,7 @@ function sleep(ms) {
 
 async function run() {
     try {
-        for (const day of Days) {
+        for (const day of days(new Date(Date.now()))) {
             for (const district of districts) {
                 const data = await findByDistrict(district, day);
                 data.sessions.forEach(element => {
@@ -95,7 +96,8 @@ async function run() {
 }
 run();
 
-setInterval(()=> console.log("Alive"), 5000);
+setInterval(()=> console.log("Alive"), 10000);
+setInterval(()=> sendSlotOnTeleram("Alive"), 600000);
 
 
 function sendSlot(subject) {
