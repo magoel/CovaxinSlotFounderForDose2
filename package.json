@@ -13,6 +13,7 @@
   "author": "manish.dce@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.1",
     "date-and-time": "^1.0.1",
     "node-fetch": "^2.6.1",
     "sendmail": "^1.6.1"
