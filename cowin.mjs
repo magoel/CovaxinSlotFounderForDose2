@@ -79,7 +79,7 @@ async function login(mobile)
 {
     try {
         const otpRes = await generateOtp(mobile);
-        const otp = await getOtp();
+        const otp = await getOtp(mobile);
         const tokenObj = await confirmOtp(otp, otpRes);
         console.log(tokenObj);
         return tokenObj;

@@ -1,4 +1,5 @@
 import readline from 'readline'
+import chalk from 'chalk'
 
 function promptQuestions(question)
 {
@@ -16,5 +17,5 @@ function promptQuestions(question)
 
 export default async function getOtp(mobile)
 {
-  return await promptQuestions('Enter Otp ? ');
+  return await promptQuestions(chalk.green('Enter Otp ? '));
 }
