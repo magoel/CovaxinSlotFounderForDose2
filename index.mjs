@@ -1,14 +1,12 @@
-import { sleep, checkResponseStatus } from './utils.mjs'
+import { sleep, sendEmailMessage, sendSlotOnTelegram } from './utils.mjs'
 import dateNtime from 'date-and-time';
-import smail from 'sendmail';
 import cowin from './cowin.mjs';
 import { exit } from 'process';
-import sendSlotOnTeleram  from './sendOnTelegram.mjs'
-const sendmail = smail();
 
 //////////// Configuration below this line only ///////////////////////////////////////////////////////
 // const vaccine = "COVISHIELD";
 const emailaddr = "manish.dce@gmail.com";
+const botkey = 'bot1819640274:AAGKc7yXRN_EFdRXWG_f1iDyvpqBEOr3TWU'; // telegram bot-key
 const vaccine = "COVAXIN";
 const mobile = 8826664220;
 const dose = 2;
@@ -35,6 +33,15 @@ function criteria (session) {
     return slots;
 }
 //////////// Configuration above this line only ///////////////////////////////////////////////////////
+const telegram = function(msg) {
+    return sendSlotOnTelegram(botkey, msg);
+};
+
+function sendSlot(subject) {
+    telegram(subject);
+    // sendEmailMessage(emailaddr, subject);
+}
+
 async function run() {
     let beneficiary = null;
     let tokenResponse = null;
@@ -59,7 +66,7 @@ async function run() {
                         console.log(subject);
                         if (!tokenResponse)
                         {
-                            sendSlotOnTeleram("Requesting otp ... look alive");
+                            telegram("Requesting otp ... look alive");
                             tokenResponse = await cowin.login(mobile);
                             setTimeout(() => { tokenResponse = null; }, 300000);
                         }
@@ -71,7 +78,7 @@ async function run() {
                                 if (!appointment)
                                     return;
                                 console.log(appointment);
-                                sendSlotOnTeleram("Appointment booked :-)");
+                                telegram("Appointment booked :-)");
                                 exit(0);
                             }
                             catch(err)
@@ -89,7 +96,7 @@ async function run() {
     }
     catch(err)
     {
-        sendSlotOnTeleram(err.toString());
+        telegram(err.toString());
         console.log(err);
     }
     setTimeout(run, 3000);
@@ -98,23 +105,5 @@ async function run() {
 (async function () {
     run();
     setInterval(()=> console.log("Alive"), 30000);
-    setInterval(()=> sendSlotOnTeleram("Alive"), 600000);
+    setInterval(()=> telegram("Alive"), 600000);
 })();
-
-
-function sendSlot(subject) {
-    sendSlotOnTeleram(subject);
-    // sendEmailMessage(emailaddr, subject);
-}
-
-function sendEmailMessage(emailaddr, subject) {
-    msg = { 
-        from: 'vaccineslotfinder@manishgoel.org',
-        to: emailaddr
-    };
-    msg.subject = subject;
-    sendmail(msg, function (err, reply) {
-        console.log(err && err.stack)
-        console.dir(reply)
-    });
-}

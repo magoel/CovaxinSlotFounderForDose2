@@ -123,7 +123,7 @@ async function schedule(token, dose, session, slot, beneficiary) {
     const path = 'https://cdn-api.co-vin.in/api/v2/appointment/schedule';
     const res = await fetch(path, { method: 'POST', body: JSON.stringify(params), headers: headers });
     if (res.status == 401)
-        throw new Error('401');
+        throw new Error('401'); // bad auth
     else if (res.status != 200)
     {
         console.log(`The HTTP status of the reponse: ${res.status} (${res.statusText})`);
