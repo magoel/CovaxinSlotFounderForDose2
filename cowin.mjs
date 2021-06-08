@@ -10,7 +10,6 @@ async function findByDistrict(district, date) {
         district_id: district,
         date: date
     };
-    // const path = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?' + querystring.stringify(parameters);
     const path = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?' + querystring.stringify(parameters);
     const res = await fetch(path);
     checkResponseStatus(res);
@@ -23,7 +22,7 @@ async function generateOtp(mobile)
     const path = "https://cdn-api.co-vin.in/api/v2/auth/generateMobileOTP";
     const params = {
         'mobile' : mobile,
-        'secret' : "U2FsdGVkX19UDGcUEnH2W7S0jMGkF9jEhZQEHUVPNnFg2JQAj8tUgZP+qdODWsBkPqkI8dPWCMNG55Y3mmKcCQ=="
+        'secret' : "U2FsdGVkX19UDGcUEnH2W7S0jMGkF9jEhZQEHUVPNnFg2JQAj8tUgZP+qdODWsBkPqkI8dPWCMNG55Y3mmKcCQ==" // copied from cowin-site after inspecting its request-headers, may change potentially in future.
     };
 
     const headers = {
@@ -55,6 +54,8 @@ async function confirmOtp(otp, genOtpResponse)
     };
 
     const headers = {
+        // most likely, we don't need authorization header any longer, but I have not tested without it.
+        // I copied it from request-headers from cowin-site to its servers.
         "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZWVkNThlOC01ODg1LTQ2MzktOThiMS0yZjYyYmE1YmE4Y2QiLCJ1c2VyX2lkIjoiYWVlZDU4ZTgtNTg4NS00NjM5LTk4YjEtMmY2MmJhNWJhOGNkIiwidXNlcl90eXBlIjoiQkVORUZJQ0lBUlkiLCJtb2JpbGVfbnVtYmVyIjo4ODI2NjY0MjIwLCJiZW5lZmljaWFyeV9yZWZlcmVuY2VfaWQiOjI3NjQ1NjgwNzk4MjUwLCJzZWNyZXRfa2V5IjoiYjVjYWIxNjctNzk3Ny00ZGYxLTgwMjctYTYzYWExNDRmMDRlIiwic291cmNlIjoiY293aW4iLCJ1YSI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS85MC4wLjQ0MzAuMjEyIFNhZmFyaS81MzcuMzYiLCJkYXRlX21vZGlmaWVkIjoiMjAyMS0wNi0wNlQwNjoxNDowOS44NTNaIiwiaWF0IjoxNjIyOTYwMDQ5LCJleHAiOjE2MjI5NjA5NDl9.4olQtPcsJAnF7QOdVApOpfCx_xX82bZxVuiCcvoK-vI",
         "content-type": "application/json",
         "origin": "https://selfregistration.cowin.gov.in",
