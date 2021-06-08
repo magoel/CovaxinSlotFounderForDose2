@@ -27,11 +27,32 @@ export function sendEmailMessage(emailaddr, subject) {
     });
 }
 
+const cacheBotKeyVschatId = new Map();
+async function getTelegramChatId(botKey)
+{
+    if (cacheBotKeyVschatId.has(botKey))
+        return cacheBotKeyVschatId.get(botKey);
+    const path = `https://api.telegram.org/${botKey}/getUpdates?offset=0`;
+    try {
+        const res = await fetch(path, {method: 'GET' });
+        checkResponseStatus(res);
+        const data = await res.json()
+        if (data.ok)
+            return data.result[0].message.chat.id;
+        else
+            throw new Error("telegram-bot getMe call failed");
+    } catch(err)
+    {
+        console.log(err)
+    }
+}
+
 export async function sendSlotOnTelegram(botkey, subject)
 {
+    const chat_id = await getTelegramChatId(botkey);
     const path = `https://api.telegram.org/${botkey}/sendMessage`;
     const params = new URLSearchParams();
-    params.append('chat_id', 1898367952);
+    params.append('chat_id', chat_id);
     params.append('text', subject);
     try {
         const res = await fetch(path, {method: 'POST', body: params });
@@ -43,3 +64,8 @@ export async function sendSlotOnTelegram(botkey, subject)
         console.log(err)
     }
 }
+
+
+// (async function(){
+//     sendSlotOnTelegram('bot1819640274:AAGKc7yXRN_EFdRXWG_f1iDyvpqBEOr3TWU', "hello");
+// })();
